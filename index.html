@@ -83,9 +83,23 @@
             </div>
         </main>
 
-        <footer class="app-footer">
-            <p>Task Manager Pro Charles Pura &copy; 2026 | <span id="currentDate"></span></p>
-        </footer>
+      <footer class="app-footer">
+  <p>
+    Task Manager Pro Charles Pura &copy; 2026 | 
+    <span id="currentDate"></span> | 
+    <a href="https://github.com/charlespura" target="_blank" rel="noopener">GitHub</a> | 
+    <a href="#" id="repoLink" target="_blank" rel="noopener">Repo</a>
+  </p>
+</footer>
+
+<script>
+  // Automatically insert current date
+  document.getElementById('currentDate').textContent = new Date().toLocaleDateString();
+
+  // Replace '#' with your repo link when ready
+  document.getElementById('repoLink').href = 'https://github.com/charlespura/task-manager';
+</script>
+
     </div>
 
     <script src="app.js"></script>
