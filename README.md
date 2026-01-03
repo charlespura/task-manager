@@ -30,4 +30,40 @@ Add, view, and delete tasks with a clean, interactive UI.
 ---
 
 ## 📁 Project Structure
+task-manager/
+├─ index.html # Main frontend page
+├─ app.js # JavaScript for CRUD operations
+├─ style.css # Styling for the app
+└─ api/
+├─ config.php # Supabase URL & KEY (ignored by git)
+├─ create_task.php # Add new task
+├─ get_tasks.php # Get all tasks
+├─ delete_task.php # Delete a task
 
+
+---
+
+## ⚡ Setup / Installation
+
+1. Clone the repository:
+
+..bash
+git clone https://github.com/charlespura/task-manager.git
+
+
+Copy config.php.example → config.php and add your Supabase credentials:
+
+
+
+<?php
+define('SUPABASE_URL', 'your-supabase-url');
+define('SUPABASE_KEY', 'your-supabase-key');
+
+
+Open on a local server (XAMPP, MAMP, etc.):
+
+http://localhost/task-manager/index.html
+Start adding tasks! ✅
+
+
+<img width="1456" height="880" alt="Screenshot 2026-01-04 at 1 23 39 AM" src="https://github.com/user-attachments/assets/6903f4e6-5256-4cc4-a652-1345f04d632d" />
