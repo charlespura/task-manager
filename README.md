@@ -47,12 +47,10 @@ task-manager/
 
 1. Clone the repository:
 
-..bash
 git clone https://github.com/charlespura/task-manager.git
 
 
-Copy config.php.example → config.php and add your Supabase credentials:
-
+Copy config.php.example → config.php and add your Supabase credentials
 
 
 <?php
@@ -66,4 +64,3 @@ http://localhost/task-manager/index.html
 Start adding tasks! ✅
 
 
-<img width="1456" height="880" alt="Screenshot 2026-01-04 at 1 23 39 AM" src="https://github.com/user-attachments/assets/6903f4e6-5256-4cc4-a652-1345f04d632d" />
