@@ -52,7 +52,8 @@ git clone https://github.com/charlespura/task-manager.git
 
 
 ---
-<?php
+
+config.php
 define('SUPABASE_URL', 'your-supabase-url');
 define('SUPABASE_KEY', 'your-supabase-key');
 
