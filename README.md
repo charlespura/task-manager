@@ -31,14 +31,23 @@ Add, view, and delete tasks with a clean, interactive UI.
 
 ## 📁 Project Structure
 task-manager/
+
 ├─ index.html # Main frontend page
+
 ├─ app.js # JavaScript for CRUD operations
+
 ├─ style.css # Styling for the app
+
 └─ api/
+
 ├─ config.php # Supabase URL & KEY (ignored by git)
+
 ├─ create_task.php # Add new task
+
 ├─ get_tasks.php # Get all tasks
+
 ├─ delete_task.php # Delete a task
+
 
 
 ---
@@ -64,3 +73,5 @@ http://localhost/task-manager/index.html
 Start adding tasks! ✅
 
 
+<img width="800" height="500" alt="Screenshot 2026-01-04 at 1 41 36 AM" src="https://github.com/user-attachments/assets/eb65e9e4-ee32-49cf-9f0e-cbc4cb0b86c2" />
+<img width="800" height="500" alt="Screenshot 2026-01-04 at 1 41 50 AM" src="https://github.com/user-attachments/assets/190e9328-b1ef-4c38-b798-21f99d59dab5" />
