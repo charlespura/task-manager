@@ -50,14 +50,13 @@ task-manager/
 git clone https://github.com/charlespura/task-manager.git
 
 
-Copy config.php.example → config.php and add your Supabase credentials
 
-
+---
 <?php
 define('SUPABASE_URL', 'your-supabase-url');
 define('SUPABASE_KEY', 'your-supabase-key');
 
-
+---
 Open on a local server (XAMPP, MAMP, etc.):
 
 http://localhost/task-manager/index.html
