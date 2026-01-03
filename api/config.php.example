@@ -1,0 +1,4 @@
+<?php
+define('SUPABASE_URL', 'your-supabase-url');
+define('SUPABASE_KEY', 'your-supabase-key');
+?>

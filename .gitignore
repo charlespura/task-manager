@@ -1,0 +1,15 @@
+# Ignore PHP config with secrets
+api/config.php
+
+# Ignore OS files
+.DS_Store
+Thumbs.db
+
+# Ignore log files
+*.log
+
+# Ignore node_modules if you ever use npm
+node_modules/
+
+# Ignore temporary files
+*.tmp
