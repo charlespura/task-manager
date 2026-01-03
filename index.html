@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Manager Pro</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header class="app-header">
+            <h1><i class="fas fa-tasks"></i> Task Manager Pro</h1>
+            <p class="subtitle">Organize your work efficiently</p>
+        </header>
+
+        <main class="app-main">
+            <div class="task-input-section">
+                <div class="input-group">
+                    <input 
+                        type="text" 
+                        id="taskInput" 
+                        placeholder="What needs to be done?" 
+                        class="task-input"
+                        onkeypress="handleEnterKey(event)"
+                    >
+                    <button onclick="addTask()" class="add-btn">
+                        <i class="fas fa-plus"></i> Add Task
+                    </button>
+                </div>
+                <div class="stats">
+                    <div class="stat-item">
+                        <span class="stat-count" id="totalTasks">0</span>
+                        <span class="stat-label">Total Tasks</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-count" id="pendingTasks">0</span>
+                        <span class="stat-label">Pending</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-count" id="completedTasks">0</span>
+                        <span class="stat-label">Completed</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="filters">
+                <button class="filter-btn active" onclick="filterTasks('all')">
+                    <i class="fas fa-list"></i> All Tasks
+                </button>
+                <button class="filter-btn" onclick="filterTasks('pending')">
+                    <i class="fas fa-clock"></i> Pending
+                </button>
+                <button class="filter-btn" onclick="filterTasks('completed')">
+                    <i class="fas fa-check-circle"></i> Completed
+                </button>
+            </div>
+
+            <div class="tasks-container">
+                <div class="task-list-header">
+                    <h2><i class="fas fa-clipboard-list"></i> Your Tasks</h2>
+                    <div class="sort-options">
+                        <select id="sortSelect" onchange="sortTasks()">
+                            <option value="newest">Newest First</option>
+                            <option value="oldest">Oldest First</option>
+                            <option value="title">Alphabetical</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="loading" id="loading">
+                    <div class="spinner"></div>
+                    <p>Loading tasks...</p>
+                </div>
+                
+                <ul id="taskList" class="task-list"></ul>
+                
+                <div class="empty-state" id="emptyState">
+                    <i class="fas fa-check-circle"></i>
+                    <h3>No tasks yet</h3>
+                    <p>Add a task using the input above to get started!</p>
+                </div>
+            </div>
+        </main>
+
+        <footer class="app-footer">
+            <p>Task Manager Pro Charles Pura &copy; 2026 | <span id="currentDate"></span></p>
+        </footer>
+    </div>
+
+    <script src="app.js"></script>
+    <script>
+        // Set current date in footer
+        const now = new Date();
+        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+        document.getElementById('currentDate').textContent = now.toLocaleDateString('en-US', options);
+        
+        // Enter key support for task input
+        function handleEnterKey(event) {
+            if (event.key === 'Enter') {
+                addTask();
+            }
+        }
+    </script>
+</body>
+</html>
