@@ -83,23 +83,73 @@
             </div>
         </main>
 
-      <footer class="app-footer">
-  <p>
-    Task Manager Pro Charles Pura &copy; 2026 | 
-    <span id="currentDate"></span> | 
-    <a href="https://github.com/charlespura" target="_blank" rel="noopener">GitHub</a> | 
-    <a href="#" id="repoLink" target="_blank" rel="noopener">Repo</a>
-  </p>
-</footer>
+        <footer class="app-footer">
+            <p>Task Manager Pro &copy; 2023 | <span id="currentDate"></span></p>
+        </footer>
+    </div>
 
-<script>
-  // Automatically insert current date
-  document.getElementById('currentDate').textContent = new Date().toLocaleDateString();
+    <!-- Edit Task Modal -->
+    <div class="modal" id="editModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-edit"></i> Edit Task</h3>
+                <button class="modal-close" onclick="closeEditModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="editTaskTitle"><i class="fas fa-heading"></i> Task Title</label>
+                    <input type="text" id="editTaskTitle" class="modal-input" placeholder="Enter task title...">
+                </div>
+                <div class="form-group">
+                    <label for="editTaskStatus"><i class="fas fa-tag"></i> Status</label>
+                    <select id="editTaskStatus" class="modal-select">
+                        <option value="pending">Pending</option>
+                        <option value="completed">Completed</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn secondary" onclick="closeEditModal()">
+                    <i class="fas fa-times"></i> Cancel
+                </button>
+                <button class="modal-btn primary" onclick="saveTaskChanges()">
+                    <i class="fas fa-save"></i> Save Changes
+                </button>
+            </div>
+        </div>
+    </div>
 
-  // Replace '#' with your repo link when ready
-  document.getElementById('repoLink').href = 'https://github.com/charlespura/task-manager';
-</script>
-
+    <!-- Delete Task Modal -->
+    <div class="modal" id="deleteModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-trash-alt"></i> Delete Task</h3>
+                <button class="modal-close" onclick="closeDeleteModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="warning-icon">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <h4>Are you sure you want to delete this task?</h4>
+                <p id="deleteTaskText" class="delete-task-text">This action cannot be undone.</p>
+                <div class="warning-note">
+                    <i class="fas fa-info-circle"></i>
+                    <span>All task data will be permanently removed.</span>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="modal-btn secondary" onclick="closeDeleteModal()">
+                    <i class="fas fa-times"></i> Cancel
+                </button>
+                <button class="modal-btn danger" onclick="confirmDelete()">
+                    <i class="fas fa-trash"></i> Delete Task
+                </button>
+            </div>
+        </div>
     </div>
 
     <script src="app.js"></script>
@@ -115,6 +165,27 @@
                 addTask();
             }
         }
+        
+        // Close modals when clicking outside
+        document.addEventListener('DOMContentLoaded', function() {
+            const modals = document.querySelectorAll('.modal');
+            modals.forEach(modal => {
+                modal.addEventListener('click', function(e) {
+                    if (e.target === modal) {
+                        if (modal.id === 'editModal') closeEditModal();
+                        if (modal.id === 'deleteModal') closeDeleteModal();
+                    }
+                });
+            });
+            
+            // Close modals with Escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    closeEditModal();
+                    closeDeleteModal();
+                }
+            });
+        });
     </script>
 </body>
 </html>

@@ -1,13 +1,27 @@
-// -------------------
-// app.js - Enhanced Task Manager with Modern UI
-// -------------------
-
 let currentFilter = 'all';
 let currentSort = 'newest';
+let currentEditTaskId = null;
+let currentDeleteTaskId = null;
+let currentDeleteTaskTitle = null;
 
 // Initialize the app
 document.addEventListener('DOMContentLoaded', function() {
     loadTasks();
+    
+    // Add keyboard shortcuts
+    document.addEventListener('keydown', function(e) {
+        // Ctrl+E to focus on task input
+        if (e.ctrlKey && e.key === 'e') {
+            e.preventDefault();
+            document.getElementById('taskInput').focus();
+        }
+        
+        // Escape to close modals
+        if (e.key === 'Escape') {
+            closeEditModal();
+            closeDeleteModal();
+        }
+    });
 });
 
 function addTask() {
@@ -16,6 +30,7 @@ function addTask() {
 
     if (!title) {
         showNotification("Please enter a task!", "error");
+        input.focus();
         return;
     }
 
@@ -33,6 +48,8 @@ function addTask() {
         input.value = "";
         showNotification("Task added successfully!", "success");
         loadTasks();
+        // Focus back on input for next task
+        document.getElementById('taskInput').focus();
     })
     .catch(err => {
         console.error("Error:", err);
@@ -89,16 +106,16 @@ function renderTasks(tasks) {
             <div class="task-content">
                 <div class="task-title">${escapeHtml(task.title)}</div>
                 <div class="task-meta">
-                    <span>Created: ${formatDate(task.created_at)}</span>
+                    <span><i class="far fa-calendar"></i> ${formatDate(task.created_at)}</span>
                     <span class="task-status ${task.status}">${task.status}</span>
                 </div>
             </div>
             
             <div class="task-actions">
-                <button class="task-btn edit-btn" onclick="editTask('${task.id}', '${escapeHtml(task.title)}')">
+                <button class="task-btn edit-btn" onclick="openEditModal('${task.id}', '${escapeHtml(task.title)}', '${task.status}')">
                     <i class="fas fa-edit"></i>
                 </button>
-                <button class="task-btn delete-btn" onclick="deleteTask('${task.id}')">
+                <button class="task-btn delete-btn" onclick="openDeleteModal('${task.id}', '${escapeHtml(task.title)}')">
                     <i class="fas fa-trash"></i>
                 </button>
             </div>
@@ -159,42 +176,106 @@ function toggleTaskStatus(id) {
     });
 }
 
-function editTask(id, currentTitle) {
-    const newTitle = prompt("Edit task:", currentTitle);
-    if (newTitle !== null && newTitle.trim() !== "") {
-        fetch("api/update_task.php", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ 
-                id: id, 
-                title: newTitle.trim()
-            })
-        })
-        .then(res => res.json())
-        .then(() => {
-            showNotification("Task updated successfully!", "success");
-            loadTasks();
-        })
-        .catch(err => {
-            console.error("Error:", err);
-            showNotification("Failed to update task.", "error");
-        });
-    }
+// Edit Modal Functions
+function openEditModal(id, title, status) {
+    currentEditTaskId = id;
+    
+    document.getElementById('editTaskTitle').value = title;
+    document.getElementById('editTaskStatus').value = status;
+    
+    // Focus on title input
+    setTimeout(() => {
+        document.getElementById('editTaskTitle').focus();
+    }, 100);
+    
+    // Show modal with animation
+    const modal = document.getElementById('editModal');
+    modal.style.display = 'flex';
+    setTimeout(() => {
+        modal.classList.add('active');
+    }, 10);
 }
 
-function deleteTask(id) {
-    if (!confirm("Are you sure you want to delete this task?")) {
+function closeEditModal() {
+    const modal = document.getElementById('editModal');
+    modal.classList.remove('active');
+    setTimeout(() => {
+        modal.style.display = 'none';
+        currentEditTaskId = null;
+    }, 300);
+}
+
+function saveTaskChanges() {
+    const newTitle = document.getElementById('editTaskTitle').value.trim();
+    const newStatus = document.getElementById('editTaskStatus').value;
+    
+    if (!newTitle) {
+        showNotification("Task title cannot be empty!", "error");
+        document.getElementById('editTaskTitle').focus();
         return;
     }
     
+    fetch("api/update_task.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ 
+            id: currentEditTaskId, 
+            title: newTitle,
+            status: newStatus
+        })
+    })
+    .then(res => res.json())
+.then(data => {
+    if (!data.success) {
+        throw data;
+    }
+    showNotification("Task updated successfully!", "success");
+    closeEditModal();
+    loadTasks();
+})
+.catch(err => {
+    console.error("Update failed:", err);
+    showNotification("Failed to update task.", "error");
+});
+
+}
+
+// Delete Modal Functions
+function openDeleteModal(id, title) {
+    currentDeleteTaskId = id;
+    currentDeleteTaskTitle = title;
+    
+    // Update modal text with task title
+    document.getElementById('deleteTaskText').textContent = `"${title}"`;
+    
+    // Show modal with animation
+    const modal = document.getElementById('deleteModal');
+    modal.style.display = 'flex';
+    setTimeout(() => {
+        modal.classList.add('active');
+    }, 10);
+}
+
+function closeDeleteModal() {
+    const modal = document.getElementById('deleteModal');
+    modal.classList.remove('active');
+    setTimeout(() => {
+        modal.style.display = 'none';
+        currentDeleteTaskId = null;
+        currentDeleteTaskTitle = null;
+    }, 300);
+}
+
+function confirmDelete() {
     fetch("api/delete_task.php", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ id })
+        body: JSON.stringify({ id: currentDeleteTaskId })
     })
     .then(res => res.json())
     .then(() => {
         showNotification("Task deleted successfully!", "success");
+        closeDeleteModal();
         loadTasks();
     })
     .catch(err => {
@@ -289,7 +370,7 @@ notificationStyles.textContent = `
         display: flex;
         align-items: center;
         gap: 12px;
-        z-index: 1000;
+        z-index: 1001;
         opacity: 0;
         transform: translateX(100px);
         transition: all 0.3s ease;
